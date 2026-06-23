@@ -1,0 +1,4 @@
+# Pinned for reproducible builds. A fresh clone + `pip install -r requirements.txt`
+# rebuilds the fonts via `python3 -m superstack.build_font`.
+fonttools==4.63.0
+pytest==9.1.1

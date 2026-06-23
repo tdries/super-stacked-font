@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Super Stacked widgets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family: "Super Stacked"; src: url("./SuperStackedSans.otf") format("opentype"); font-display: swap; }
+  @font-face { font-family: "SS Grotesk"; src: url("./SuperStackedGrotesk.otf") format("opentype"); font-display: swap; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    background: #f4efe6; padding: 44px;
+    display: flex; flex-direction: column; gap: 28px;
+  }
+  .row { display: flex; gap: 28px; align-items: stretch; flex-wrap: wrap; }
+  .ss { font-family: "Super Stacked"; line-height: 1; white-space: nowrap; letter-spacing: 0; display: inline-block; }
+  .ss.grotesk { font-family: "SS Grotesk"; }
+
+  .card { border-radius: 18px; padding: 28px 30px; width: 360px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 12px 30px rgba(20,17,15,.10); }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: .22em; opacity: .7; }
+  .name { font-size: 14px; font-weight: 600; }
+
+  /* single regular-font char on the SAME baseline as a stacked pair */
+  .combo { display: flex; align-items: center; gap: .14em; }
+  .combo .one { font-weight: 700; line-height: 1; }   /* the single regular char */
+  .combo .ss { line-height: 1; }
+
+  /* the before/after row: normal two-line set vs the stacked one-line glyph.
+     The stacked glyph is set to ONE normal line's height, so it is visibly half
+     the vertical space of the two-line normal column: that is the whole point. */
+  .vs { display: flex; align-items: flex-start; gap: 24px; }
+  .vs .col { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .vs .micro { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; opacity: .55; }
+  /* normal: two real lines, taking two lines of height */
+  .normal2 { font-weight: 700; line-height: 1.05; }
+  /* stacked: one glyph at the height of a SINGLE normal line */
+  .stackbox { display: flex; align-items: center; }
+
+  /* 1. PRICE TAG -- retail */
+  .price { background: #fffdf8; border: 2px solid #14110f; color: #14110f; }
+  .price .tag { color: #d6452b; }
+  .price .normal2 { font-size: 34px; }      /* 2 lines ~= 71px tall */
+  .price .ss { font-size: 36px; }           /* 1 line ~= 36px tall */
+  .price .barcode { height: 30px; background:
+    repeating-linear-gradient(90deg, #14110f 0 3px, transparent 3px 5px, #14110f 5px 6px, transparent 6px 10px); border-radius: 2px; margin-top: 2px; }
+
+  /* 2. BILINGUAL SIGN -- signage */
+  .sign { background: #0e5d54; color: #eafff6; }
+  .sign .tag { color: #7fe3c9; }
+  .sign .micro { color: #7fe3c9; opacity: .8; }
+  .sign .normal2 { font-size: 34px; color: #eafff6; }
+  .sign .ss { font-size: 38px; color: #eafff6; }
+
+  /* 3. FINANCE TICKER -- trading UI */
+  .ticker { background: #0b0d10; color: #e8edf2; }
+  .ticker .tag { color: #5b6573; }
+  .ticker .micro { color: #5b6573; }
+  .ticker .normal2 { font-size: 32px; color: #e8edf2; }
+  .ticker .ss { font-size: 34px; color: #21d07a; }
+  .ticker .spark { height: 34px; width: 100%; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ROW 1: before / after (regular two lines vs stacked one line) -->
+<div class="row">
+
+  <!-- 1. Label over value: a price tag -->
+  <div class="card price">
+    <span class="tag">In store today</span>
+    <div class="name">Eames Lounge Chair</div>
+    <div class="vs">
+      <div class="col">
+        <span class="micro">Normal &middot; 2 lines</span>
+        <div class="normal2">PRICE<br>$2495</div>
+      </div>
+      <div class="col">
+        <span class="micro">Super Stacked &middot; 1 line</span>
+        <div class="stackbox"><span class="ss" data-stack="PRICE|$2495"></span></div>
+      </div>
+    </div>
+    <div class="barcode"></div>
+  </div>
+
+  <!-- 2. Source over translation: a bilingual wayfinding sign -->
+  <div class="card sign">
+    <span class="tag">Wayfinding &middot; EN / ES</span>
+    <div class="name">Drinking fountain &#8594; 40 m</div>
+    <div class="vs">
+      <div class="col">
+        <span class="micro">Normal &middot; 2 lines</span>
+        <div class="normal2">WATER<br>AGUA</div>
+      </div>
+      <div class="col">
+        <span class="micro">Super Stacked &middot; 1 line</span>
+        <div class="stackbox"><span class="ss" data-stack="WATER|AGUA"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Ticker over move: a trading watchlist row -->
+  <div class="card ticker">
+    <span class="tag">Watchlist &middot; NASDAQ</span>
+    <div class="name">15:42 ET</div>
+    <div class="vs">
+      <div class="col">
+        <span class="micro">Normal &middot; 2 lines</span>
+        <div class="normal2">AAPL<br>+1.4%</div>
+      </div>
+      <div class="col">
+        <span class="micro">Super Stacked &middot; 1 line</span>
+        <div class="stackbox"><span class="ss grotesk" data-stack="AAPL|+1.4%"></span></div>
+      </div>
+    </div>
+    <svg class="spark" viewBox="0 0 200 34" preserveAspectRatio="none">
+      <polyline points="0,28 25,24 50,26 75,17 100,20 125,12 150,14 175,7 200,5"
+        fill="none" stroke="#21d07a" stroke-width="2.5"/>
+    </svg>
+  </div>
+
+</div><!-- /ROW 1 -->
+
+<!-- ROW 2: a single regular-font character on the same baseline as a stacked pair -->
+<div class="row">
+
+  <!-- 4. Boarding pass: gate letter B + 12/NOW stacked -->
+  <div class="card sign">
+    <span class="tag">Boarding &middot; gate</span>
+    <div class="name">Flight BA15 &middot; group 2</div>
+    <div class="combo">
+      <span class="one" style="font-size:108px">B</span>
+      <span class="ss" data-stack="12|NOW" style="font-size:48px"></span>
+    </div>
+    <div class="name" style="opacity:.7">One big letter (regular), the detail stacked beside it.</div>
+  </div>
+
+  <!-- 5. Price: euro sign + 24/95 stacked (euros over cents) -->
+  <div class="card price">
+    <span class="tag">Checkout</span>
+    <div class="name">Total due</div>
+    <div class="combo">
+      <span class="one" style="font-size:104px">&#8364;</span>
+      <span class="ss" data-stack="24|95" style="font-size:48px"></span>
+    </div>
+    <div class="barcode"></div>
+  </div>
+
+  <!-- 6. Parking level: big P + level/status stacked -->
+  <div class="card ticker">
+    <span class="tag">Parking &middot; live</span>
+    <div class="name">Garage B entry</div>
+    <div class="combo">
+      <span class="one" style="font-size:108px;color:#21d07a">P</span>
+      <span class="ss grotesk" data-stack="LV 2|OPEN" style="font-size:46px;color:#21d07a"></span>
+    </div>
+    <div class="name" style="color:#5b6573">One big level letter, the bay info stacked beside it.</div>
+  </div>
+
+</div><!-- /ROW 2 -->
+
+<script src="./superstacked.js"></script>
+<script>
+  SuperStacked.load("./font_data.json").then((ss) => {
+    for (const el of document.querySelectorAll("[data-stack]")) {
+      const [t, b] = el.getAttribute("data-stack").split("|");
+      el.textContent = ss.encode(t, b);
+    }
+  });
+</script>
+</body>
+</html>

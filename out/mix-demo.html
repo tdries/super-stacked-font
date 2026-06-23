@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Super Stacked + a normal font</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family: "Super Stacked"; src: url("./SuperStackedSans.otf") format("opentype"); font-display: swap; }
+  :root { --ink:#14110f; --paper:#f4efe6; --accent:#d6452b; --muted:#8a7f70; --line:#d8cfbf; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Spline Sans Mono", ui-monospace, monospace;
+    padding:64px 56px; -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 10% 8%, rgba(214,69,43,.05), transparent 42%),
+      radial-gradient(circle at 92% 4%, rgba(20,17,15,.04), transparent 38%);
+  }
+  .row { display:flex; align-items:center; gap:0; margin:0 0 44px; }
+  .label { font-size:11px; text-transform:uppercase; letter-spacing:.28em; color:var(--accent); margin:0 0 14px; }
+
+  /* The two faces share one baseline. Super Stacked owns line-height 1 so its
+     two rows occupy the same vertical box as one line of the normal face. */
+  .mix { display:inline-flex; align-items:center; gap:.18em; line-height:1; }
+  .normal { font-family:"Fraunces", serif; font-weight:600; }
+  .ss {
+    font-family:"Super Stacked"; line-height:1; letter-spacing:0; white-space:nowrap;
+    color:var(--accent);
+  }
+
+  .big   { font-size:64px; }
+  .mid   { font-size:40px; }
+
+  .ticket {
+    display:inline-flex; align-items:center; gap:.3em; padding:18px 26px;
+    background:var(--ink); color:var(--paper); border-radius:10px; font-size:46px;
+  }
+  .ticket .ss { color:#e7b15a; }
+  .ticket .normal { font-family:"Fraunces", serif; font-weight:600; }
+
+  .cap { font-size:12px; color:var(--muted); margin:12px 0 0; max-width:60ch; }
+</style>
+</head>
+<body>
+
+  <p class="label">One regular word, one stacked pair, same line</p>
+  <div class="row big">
+    <span class="mix">
+      <span class="normal">SHIP</span>
+      <span class="ss" data-stack="FRI|SAT"></span>
+    </span>
+  </div>
+  <p class="cap">"SHIP" is set in Fraunces. The block to its right is two words, FRI over SAT,
+     set in Super Stacked, sharing the same line height.</p>
+
+  <p class="label" style="margin-top:48px">A label that carries a sublabel</p>
+  <div class="row mid">
+    <span class="mix">
+      <span class="normal">GATE</span>
+      <span class="ss" data-stack="A12|NOW"></span>
+      <span class="normal">BOARDING</span>
+    </span>
+  </div>
+
+  <p class="label" style="margin-top:48px">Inline in a ticket chip</p>
+  <div class="ticket">
+    <span class="normal">FLIGHT</span>
+    <span class="ss" data-stack="BA15|0930"></span>
+    <span class="normal">ON TIME</span>
+  </div>
+
+<script src="./superstacked.js"></script>
+<script>
+  const ss = SuperStacked.build({"separator":"|","units":"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,:-%$/!?'#&+()\ue000","blank":57344,"puaBase":57600,"families":[{"name":"Super Stacked Sans","file":"SuperStackedSans.otf"}]});
+  for (const el of document.querySelectorAll("[data-stack]")) {
+    const [t,b] = el.getAttribute("data-stack").split("|");
+    el.textContent = ss.encode(t,b);
+  }
+</script>
+</body>
+</html>
